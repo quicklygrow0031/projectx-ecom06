@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glimmer Jewels | Exquisite Luxury</title>
+    
+    <!-- Google Fonts: Playfair Display for Elegance, Inter for Clarity -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --primary-accent: #c48f61; /* Premium Rose Gold/Bronze */
+            --secondary-accent: #f8c0d1; /* Soft Pink from Reference */
+            --text-dark: #1a1a1a;
+            --text-light: #6d6d6d;
+            --border-color: #f1f1f1;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            padding-bottom: 90px; /* Space for the floating bottom bar */
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; }
+
+        /* Global Layouts */
+        .container {
+            width: 100%;
+            padding: 0 20px;
+            max-width: 600px; /* Focus on mobile-first, max width for desktop view */
+            margin: 0 auto;
+        }
+
+        section { margin-bottom: 35px; }
+
+        /* Header / Navbar */
+        .app-header {
+            background-color: var(--white);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .menu-icon { font-size: 22px; color: var(--text-dark); }
+        .app-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-accent);
+            letter-spacing: -0.5px;
+        }
+        .app-logo span { color: var(--text-dark); }
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .header-action { font-size: 20px; color: var(--text-dark); }
+
+        /* Hero Slider / Banner Section */
+        .hero-banner {
+            background-color: #fcf6f3; /* Very soft rose gold tinge */
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 30px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 20px;
+        }
+        .hero-title {
+            font-size: 26px;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .hero-title span { color: var(--primary-accent); }
+        .hero-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .hero-btn {
+            background-color: var(--primary-accent);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        .hero-btn:hover { background-color: #aa7a4d; }
+
+        .hero-image {
+            width: 130px;
+            height: 130px;
+            background: url('https://img.staticdj.com/ef5dc5e3d5f8737162e7d1546c23957b_1280x.jpg') center/cover no-repeat;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Rings Story Style Status Feed */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section-title { font-size: 19px; color: var(--text-dark); }
+        .view-all { font-size: 12px; color: var(--primary-accent); font-weight: 500; }
+
+        .status-feed-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px 0;
+            margin: 0 -20px; /* Full width for horizontal scroll */
+        }
+        .status-feed-wrapper::-webkit-scrollbar { display: none; }
+
+        .status-feed {
+            display: inline-flex;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .status-item {
+            width: 75px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .status-image-ring {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #c48f61, #f8c0d1, #c48f61);
+            position: relative;
+            cursor: pointer;
+        }
+        .status-image-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--white);
+        }
+        
+        .status-image-ring.unread::after {
+            content: '';
+            position: absolute;
+            top: 2px; right: 2px;
+            width: 15px; height: 15px;
+            background-color: var(--primary-accent);
+            border-radius: 50%;
+            border: 2px solid var(--white);
+        }
+
+        .status-item span {
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-dark);
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            display: block;
+        }
+
+        /* Product Grids */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 100%; /* square ratio */
+            overflow: hidden;
+        }
+        
+        /* Image swapping effect */
+        .product-img-wrapper img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s;
+        }
+        .product-card:hover .product-img-wrapper img.main-img { opacity: 0; }
+        .product-card:hover .product-img-wrapper img.hover-img { opacity: 1; }
+        .product-img-wrapper img.hover-img { opacity: 0; }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 30px; height: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 16px;
+            z-index: 10;
+        }
+        .wishlist-btn.active { color: #e91e63; }
+
+        .product-details {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+        
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .product-meta {
+            font-size: 11px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rating { color: #fcc419; }
+
+        .product-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: auto;
+            padding-top: 5px;
+        }
+        .price {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .add-to-cart {
+            font-size: 13px;
+            color: var(--primary-accent);
+            font-weight: 500;
+        }
+
+        /* Banner CTA */
+        .cta-banner {
+            background-color: #fcebe5;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .cta-title { font-size: 22px; color: var(--text-dark); margin-bottom: 8px; }
+        .cta-text { font-size: 12px; color: var(--text-light); margin-bottom: 18px; }
+        .cta-btn {
+            background-color: var(--white);
+            color: var(--primary-accent);
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--primary-accent);
+            transition: all 0.3s;
+        }
+        .cta-btn:hover { background-color: var(--primary-accent); color: var(--white); }
+
+        /* Custom Styles for 1-2 pattern */
+        .status-feed-1 {
+            background-image: url('https://i.pinimg.com/736x/a5/45/a6/a545a632bda33c53b98dfe6eeaa6335b.jpg');
+            background-size: cover;
+        }
+        .status-feed-2 {
+            background-image: url('https://img.staticdj.com/ef5dc5e3d5f8737162e7d1546c23957b_1280x.jpg');
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="container">
+            <div class="header-content" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <a href="#" class="menu-icon"><i class="fa-solid fa-bars-staggered"></i></a>
+                <a href="#" class="app-logo"><span>Glimmer</span>Jewels</a>
+                <div class="header-actions">
+                    <a href="#" class="header-action"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="#" class="header-action"><i class="fa-regular fa-bell"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Hero Banner Section -->
+        <section class="hero-banner-section">
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <h1 class="hero-title">Shine with <span>Elegance</span></h1>
+                    <p class="hero-subtitle">Discover our new handcrafted rose gold collection, perfectly designed for every occasion.</p>
+                    <a href="#" class="hero-btn">Shop Now <i class="fa-solid fa-chevron-right" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </div>
+                <div class="hero-image"></div>
+            </div>
+        </section>
+
+        <!-- Status/Stories Section (1-2 pattern with Ring Images) -->
+        <section class="status-feed-section">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals Spotlight</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="status-feed-wrapper">
+                <div class="status-feed">
+                    <!-- Item 1 (Ring Image 1) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-1 unread"></div>
+                        <span>Eternal Rings</span>
+                    </div>
+                    <!-- Item 2 (Ring Image 2) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-2"></div>
+                        <span>Rose Gold Bands</span>
+                    </div>
+                    <!-- Item 3 (Ring Image 1) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-1 unread"></div>
+                        <span>Bridal Collection</span>
+                    </div>
+                    <!-- Item 4 (Ring Image 2) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-2"></div>
+                        <span>Stackable Rings</span>
+                    </div>
+                    <!-- Item 5 (Ring Image 1) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-1"></div>
+                        <span>Promise Rings</span>
+                    </div>
+                    <!-- Item 6 (Ring Image 2) -->
+                    <div class="status-item">
+                        <div class="status-image-ring status-feed-2 unread"></div>
+                        <span>Minimal Bands</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bestsellers Section (Using Product 1 Images) -->
+        <section class="bestsellers-section">
+            <div class="section-header">
+                <h2 class="section-title">Luxury Bestsellers</h2>
+                <a href="#" class="view-all">See All</a>
+            </div>
+            <div class="product-grid">
+                <!-- Product Card 1 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <a href="#" class="wishlist-btn active"><i class="fa-regular fa-heart"></i></a>
+                        <img src="https://i.pinimg.com/1200x/01/8e/27/018e2769c03f37e1450842f45f368b53.jpg" alt="Rose Gold Ring Set" class="main-img">
+                        <img src="https://i.pinimg.com/1200x/d1/8a/31/d18a31e152d95ccf39a011d963d61dde.jpg" alt="Alternate View" class="hover-img">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">Divine Rose Gold Set</h3>
+                        <div class="product-meta">
+                            <span class="product-cat">Ring Set</span>
+                            <span class="rating"><i class="fa-solid fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="price">₹12,499</span>
+                            <a href="#" class="add-to-cart">Add +</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <a href="#" class="wishlist-btn"><i class="fa-regular fa-heart"></i></a>
+                        <img src="https://i.pinimg.com/1200x/77/b4/0d/77b40d82a7558902816d326ac344cf1b.jpg" alt="Diamond Cluster Ring" class="main-img">
+                        <img src="https://i.pinimg.com/1200x/01/8e/27/018e2769c03f37e1450842f45f368b53.jpg" alt="Alternate View" class="hover-img">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">Celestial Bloom Ring</h3>
+                        <div class="product-meta">
+                            <span class="product-cat">Diamond</span>
+                            <span class="rating"><i class="fa-solid fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="price">₹15,999</span>
+                            <a href="#" class="add-to-cart">Add +</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="cta-banner-section">
+            <div class="cta-banner">
+                <h3 class="cta-title">Find Your Perfect Sparkle</h3>
+                <p class="cta-text">Not sure what you are looking for? Our styling experts are ready to guide you.</p>
+                <a href="#" class="cta-btn">Book a Consultation</a>
+            </div>
+        </section>
+
+        <!-- Timeless Gems Section (Using Product 2 Images) -->
+        <section class="timeless-gems-section">
+            <div class="section-header">
+                <h2 class="section-title">Timeless Gems</h2>
+                <a href="#" class="view-all">Explore</a>
+            </div>
+            <div class="product-grid">
+                <!-- Product Card 3 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <a href="#" class="wishlist-btn"><i class="fa-regular fa-heart"></i></a>
+                        <img src="https://i.pinimg.com/736x/07/68/b8/0768b8ca50f65479658ba5f54384a459.jpg" alt="Sapphire Ring" class="main-img">
+                        <img src="https://i.pinimg.com/736x/49/1f/6b/491f6b05df9c1e248195c9fffe3aae30.jpg" alt="Alternate View" class="hover-img">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">Sapphire Dream Band</h3>
+                        <div class="product-meta">
+                            <span class="product-cat">Gemstone</span>
+                            <span class="rating"><i class="fa-solid fa-star"></i> 4.7</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="price">₹18,500</span>
+                            <a href="#" class="add-to-cart">Add +</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <a href="#" class="wishlist-btn active"><i class="fa-regular fa-heart"></i></a>
+                        <img src="https://i.pinimg.com/1200x/c9/de/13/c9de130c74fea9a130c36a10c764b6e8.jpg" alt="Emerald Ring" class="main-img">
+                        <img src="https://i.pinimg.com/736x/07/68/b8/0768b8ca50f65479658ba5f54384a459.jpg" alt="Alternate View" class="hover-img">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">Verdant Elegance Ring</h3>
+                        <div class="product-meta">
+                            <span class="product-cat">Emerald</span>
+                            <span class="rating"><i class="fa-solid fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="price">₹21,000</span>
+                            <a href="#" class="add-to-cart">Add +</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Paste the Bottom Bar HTML here from previous response -->
+
+</body>
+</html>
